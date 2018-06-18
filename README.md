@@ -1,2 +1,2 @@
 # angular-graphql-mongodb-demo
-A full-stack example with Angular, GraphQL, Apollo and MongoDB 
+A full-stack example with Angular, Apollo, GraphQL and MongoDB 
