@@ -17,7 +17,8 @@
           <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
           <label class="form-check-label" for="isActive">Is Active</label>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-outline-primary"
+          [disabled]="editForm.invalid">Save</button>
       </div>
     </div>
   </div>

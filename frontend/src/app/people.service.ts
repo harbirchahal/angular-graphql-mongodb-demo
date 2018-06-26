@@ -3,7 +3,9 @@ import { Apollo } from 'apollo-angular';
 import graphql from 'graphql-tag';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Query, Person} from './typedefs';
+import * as _ from 'lodash';
+
+import { Query, Person, Mutation} from './typedefs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +21,14 @@ export class PeopleService {
       query: graphql`
         query {
           persons {
-            id
-            firstname
-            lastname
+            id,
+            firstname,
+            lastname,
           }
         }
       `
     }).pipe(
-      map(result => result.data.persons)
+      map(({ data }) => data.persons)
     );
   }
 
@@ -36,11 +38,11 @@ export class PeopleService {
       query: graphql`
         query ($id: Int!) {
           person (id: $id) {
-            id
-            firstname
-            lastname
-            email
-            isActive
+            id,
+            firstname,
+            lastname,
+            email,
+            isActive,
           }
         }
       `,
@@ -48,8 +50,32 @@ export class PeopleService {
         id
       }
     }).pipe(
-      map(result => result.data.person)
+      map(({ data }) => {
+        if (data.person)
+          return _.omit(data.person, ['__typename']);
+        else
+          throw new Error(`Person with id ${id} doesn't exist`);
+      })
     );
+  }
+
+  update(p: Person): Observable<any> {
+    return this.apollo.mutate<Mutation>({
+      mutation: graphql`
+        mutation ($id: Int!, $firstname: String, $lastname: String, $isActive: Boolean) {
+          update(id: $id, firstname: $firstname, lastname: $lastname, isActive: $isActive) {
+            id,
+            firstname,
+            lastname,
+            email,
+            isActive
+          }
+        }
+      `,
+      variables: {
+        ...p
+      }
+    });
   }
 
 }

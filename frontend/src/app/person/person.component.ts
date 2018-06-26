@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Person } from '../typedefs';
 import { PeopleService } from '../people.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -17,20 +17,17 @@ export class PersonComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
     private peopleService: PeopleService
   ) {
-    this.route.params
-    .pipe(
+    this.route.params.pipe(
       switchMap(params => this.peopleService.getOne(+params['id']))
     )
-    .subscribe(person => this.editForm.setValue({
-      id: person.id,
-      firstname: person.firstname,
-      lastname: person.lastname,
-      email: person.email,
-      isActive: person.isActive
-    }));
+    .subscribe(
+      person => this.editForm.setValue(person),
+      error => this.router.navigate(['../'])
+    );
     
     this.editForm = this.formBuilder.group({
       id: new FormControl(0),
@@ -44,6 +41,10 @@ export class PersonComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.peopleService
+      .update(this.editForm.value)
+      .subscribe(() => this.router.navigate(['../']));
+  }
 
 }

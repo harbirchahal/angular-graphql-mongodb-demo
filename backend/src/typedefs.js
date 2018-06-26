@@ -13,7 +13,7 @@ const typeDefs = [`
   }
 
   type Mutation {
-    addPerson(firstname: String, lastname: String, email: String!): Person
+    update(id: Int!, firstname: String, lastname: String, isActive: Boolean): Person
   }
 `];
 

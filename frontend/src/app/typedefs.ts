@@ -10,3 +10,7 @@ export type Query = {
   persons: Person[];
   person(id: number): Person;
 }
+
+export type Mutation = {
+  update(p: Person): Person
+}

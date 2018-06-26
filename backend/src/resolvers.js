@@ -8,12 +8,7 @@ const DATA = [
   { id: 7, firstname: 'Pippa', lastname: 'Johnston', email: 'pippa.johnston@gmail.com', isActive: true },
   { id: 8, firstname: 'Rachel', lastname: 'Carr', email: 'rachel.carr@gmail.com', isActive: true },
   { id: 9, firstname: 'Claire', lastname: 'Anderson', email: 'claire.anderson@gmail.com', isActive: false },
-  { id: 10, firstname: 'Diane', lastname: 'Hughes', email: 'diane.hughes@gmail.com', isActive: false },
-  { id: 11, firstname: 'Natalie', lastname: 'Johnston', email: 'natalie.johnston@gmail.com', isActive: true },
-  { id: 12, firstname: 'Abigail', lastname: 'Manning', email: 'abigail.manning@gmail.com', isActive: false },
-  { id: 13, firstname: 'Angela', lastname: 'Coleman', email: 'angela.coleman@gmail.com', isActive: false },
-  { id: 14, firstname: 'Andrew', lastname: 'Baker', email: 'andrew.baker@gmail.com', isActive: false },
-  { id: 15, firstname: 'Tracey', lastname: 'Howard', email: 'tracey.howard@gmail.com', isActive: true }
+  { id: 10, firstname: 'Diane', lastname: 'Hughes', email: 'diane.hughes@gmail.com', isActive: false }
 ];
 
 const resolvers = {
@@ -26,7 +21,15 @@ const resolvers = {
     }
   },
   Mutation: {
-    addPerson: (root, { firstname, lastname, email }) => {
+    update: (root, { id, firstname, lastname, isActive }) => {
+      const i = DATA.findIndex(e => e.id === id);
+      if (i >= 0) {
+        const p = DATA[i];
+        p.firstname = firstname;
+        p.lastname = lastname;
+        p.isActive = isActive;
+        return p;
+      }
       return null;
     }
   }
