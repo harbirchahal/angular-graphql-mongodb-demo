@@ -27,6 +27,7 @@
     "apollo-client": "^2.3.5",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
+    "font-awesome": "^4.7.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "rxjs": "^6.0.0",
